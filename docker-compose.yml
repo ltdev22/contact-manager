@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    server:
+        container_name: contact_manager_backend
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        command: npm run server
+        ports:
+            - '5000:5000'
+        volumes:
+            - './backend:/usr/src/app'
+        env_file:
+                - './.env'
+        networks:
+            - localnet
+volumes:
+    node_modules:
+    web-root:
+        driver: local
+networks:
+    localnet:
+        driver: 'bridge'
+            
