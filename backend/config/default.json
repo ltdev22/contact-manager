@@ -1,0 +1,3 @@
+{
+    "mongoURI": "mongodb://root:example@mongo:27017/contact_manager?authSource=admin"
+}

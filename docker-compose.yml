@@ -15,6 +15,31 @@ services:
                 - './.env'
         networks:
             - localnet
+        links:
+            - mongo
+    mongo:
+        image: mongo
+        container_name: task-manager-db
+        # restart: always
+        ports:
+            - '27017:27017'
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+        networks:
+            - localnet
+    mongo-express:
+        image: mongo-express
+        # restart: always
+        ports:
+            - 8081:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: example
+        depends_on:
+            - mongo
+        networks:
+            - localnet
 volumes:
     node_modules:
     web-root:
