@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb://root:example@mongo:27017/contact_manager?authSource=admin"
+    "mongoURI": "mongodb://root:example@mongo:27017/contact_manager?authSource=admin",
+    "jwtSecretKey": "secret-key"
 }
