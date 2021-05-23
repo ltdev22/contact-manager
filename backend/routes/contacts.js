@@ -55,8 +55,38 @@ router.get('/', auth, async (req, res) => {
  * @description     Edit a contact
  * @access          Public
  */
- router.put('/:id', (req, res) => {
-    res.send('Edit a contact');
+ router.put('/:id', auth, async (req, res) => {
+    const { name, email, phone, label } = req.body;
+
+    // Build contact object
+    const contactFileds = {};
+    if (name) contactFileds.name = name;
+    if (email) contactFileds.email = email;
+    if (phone) contactFileds.phone = phone;
+    if (label) contactFileds.label = label;
+
+    try {
+        let contact = await Contact.findById(req.params.id);
+        if (!contact) {
+            return res.status(404).json({ msg: 'Oops! We couldn\'t find the contact you are looking for :(' });
+        }
+
+        // Make sure the user owns this contact is trying to edit
+        if (contact.user.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'You are not authorized to perform this action' });
+        }
+
+        // Finally we can update the contact
+        contact = await Contact.findByIdAndUpdate(
+            req.params.id,
+            { $set: contactFileds },
+            { new: true } // if this contact doesn't exist, then create it
+        );
+        res.json(contact);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Oops! Something went wrong :(');
+    }
 });
 
 /**
