@@ -71,7 +71,7 @@ router.get('/', auth, async (req, res) => {
             return res.status(404).json({ msg: 'Oops! We couldn\'t find the contact you are looking for :(' });
         }
 
-        // Make sure the user owns this contact is trying to edit
+        // Make sure the user owns this contact
         if (contact.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'You are not authorized to perform this action' });
         }
@@ -94,8 +94,25 @@ router.get('/', auth, async (req, res) => {
  * @description     Delete contact
  * @access          Public
  */
- router.delete('/:id', (req, res) => {
-    res.send('Delete contact');
+ router.delete('/:id', auth, async (req, res) => {
+    try {
+        let contact = await Contact.findById(req.params.id);
+        if (!contact) {
+            return res.status(404).json({ msg: 'Oops! We couldn\'t find the contact you are looking for :(' });
+        }
+
+        // Make sure the user owns this contact
+        if (contact.user.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'You are not authorized to perform this action' });
+        }
+
+        // Finally we can update the contact
+        await Contact.findByIdAndRemove(req.params.id);
+        res.json({ msg: 'Your contact has beed deleted' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Oops! Something went wrong :(');
+    }
 });
 
 module.exports = router;
