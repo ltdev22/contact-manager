@@ -1,6 +1,22 @@
 version: '3'
 
 services:
+    client:
+        container_name: contact_manager_frontend
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        volumes:
+            - './frontend:/app'
+        ports:
+            - 3000:3000
+        env_file:
+            - './.env'
+        environment:
+            - NODE_ENV=development
+            - CHOKIDAR_USEPOLLING=true
+        networks:
+            - localnet
     server:
         container_name: contact_manager_backend
         build:
@@ -19,7 +35,7 @@ services:
             - mongo
     mongo:
         image: mongo
-        container_name: task-manager-db
+        container_name: contact_manager_db
         # restart: always
         ports:
             - '27017:27017'
