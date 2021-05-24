@@ -48,6 +48,20 @@ img {
   padding: 0 2rem;
 }
 
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.clear-float {
+  clear: both;
+}
+
+
 /* Text Styles*/
 .x-large {
   font-size: 4rem;
