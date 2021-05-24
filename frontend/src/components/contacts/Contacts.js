@@ -4,11 +4,16 @@ import ContactContext from '../../context/contact/contactContext';
 
 const Contacts = () => {
     const contactContext = useContext(ContactContext);
-    const { contacts } = contactContext;
+    const { contacts, filteredContacts } = contactContext;
+    const outputList = filteredContacts ? filteredContacts : contacts ;
+
+    if (contacts.length === 0) {
+        return <p className="lead">It seems your contact list is empty.</p>
+    }
 
     return (
         <Fragment>
-            {contacts.map((contact) => <ContactCard key={contact.id} contact={contact} />)}
+            {outputList.map((contact) => <ContactCard key={contact.id} contact={contact} />)}
         </Fragment>
     )
 }

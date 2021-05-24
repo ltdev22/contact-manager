@@ -3,7 +3,7 @@ import {
     DELETE_CONTACT,
     UPDATE_CONTACT,
     FILTER_CONTACTS,
-    CLEAR_FILTERS,
+    CLEAR_FILTER,
     SET_CURRENT,
     CLEAR_CURRENT,
 } from '../types';
@@ -37,6 +37,22 @@ export default (state, action) => {
             return {
                 ...state,
                 current: null
+            };
+        case FILTER_CONTACTS:
+            return {
+                ...state,
+                filtered: state.contacts.filter((contact) => {
+                    const regex = new RegExp(`${action.payload}`, 'gi');
+                    return contact.name.match(regex) || 
+                            contact.email.match(regex) || 
+                            contact.phone.match(regex) || 
+                            contact.label.match(regex);
+                })
+            };
+        case CLEAR_FILTER:
+            return {
+                ...state,
+                filtered: null
             };
         default:
             return state;
