@@ -1,15 +1,17 @@
 import React, { useState, useContext, useEffect } from 'react';
 import ContactContext from '../../context/contact/contactContext';
 
+const initContact = {
+    name: '',
+    email: '',
+    phone: '',
+    label: 'personal'
+};
+
 const ContactForm = () => {
-    const initContact = {
-        name: '',
-        email: '',
-        phone: '',
-        label: 'personal'
-    };
     const contactContext = useContext(ContactContext);
     const { addContact, updateContact, currentContact, clearCurrentContact } = contactContext;
+    const [contact, setContact] = useState(initContact);
 
     useEffect(() => {
         if (currentContact !== null) {
@@ -18,8 +20,6 @@ const ContactForm = () => {
             setContact(initContact);    
         }
     }, [contactContext, currentContact]); // to kick-in only if contactContext or currentContact has changed
-
-    const [contact, setContact] = useState(initContact);
 
     const { name, email, phone, label} = contact;
 
