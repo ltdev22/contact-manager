@@ -5,6 +5,7 @@ import Home from './components/pages/Home';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import setAuthToken from './utils/setAuthToken';
+import ProtectedRoute from './components/routing/ProtectedRoute';
 import './App.css';
 
 import AuthState from './context/auth/AuthState';
@@ -26,7 +27,7 @@ function App() {
 							<div className="container">
 								<Alerts />
 								<Switch>
-									<Route exact path='/' component={Home} />
+									<ProtectedRoute exact path='/' component={Home} />
 									<Route exact path='/register' component={Register} />
 									<Route exact path='/login' component={Login} />
 								</Switch>
