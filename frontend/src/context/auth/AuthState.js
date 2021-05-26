@@ -67,7 +67,27 @@ const AuthState = (props) => {
     };
 
     /** Login user */
-    const login = () => console.log('TODO login user');
+    const login = async (formData) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        try {
+            const res = await axios.post('/api/auth', formData, config);
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data // should be the token returned from the backend api
+            });
+            loadUser();
+        } catch (error) {
+            dispatch({
+                type: LOGIN_FAIL,
+                payload: error.response.data // the object contains the msg if fails
+            });
+        }
+    };
 
     /** Logout user */
     const logout = () => console.log('TODO logout user');

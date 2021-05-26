@@ -41,7 +41,7 @@ router.get('/', auth, async (req, res) => {
             // Check the user has provided the correct credentials 
             let user = await User.findOne({ email });
             if (!user) {
-                return res.status(400).json({ msg: 'Your credentials are invalid' });
+                return res.status(400).json({ id: 'login_failed', msg: 'Your credentials are invalid' });
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
