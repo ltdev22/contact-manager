@@ -29,7 +29,7 @@ router.post('/', [
             // Do we have already a user with this email?
             let user = await User.findOne({ email });
             if (user) {
-                return res.status(400).json({ msg: 'User already exists' });
+                return res.status(400).json({ id: 'user_exists', msg: `The email ${email} already exists with another account.` });
             }
             
             // Is a new user, so create a new instance, hash the password 

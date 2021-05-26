@@ -1,16 +1,32 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
 
 const Register = () => {
+    // Initialize context and state
     const alertContext = useContext(AlertContext);
+    const authContext = useContext(AuthContext);
+
     const [user, setUser] = useState({
         fullName: '',
         email: '',
         password: '',
         passwordConfirm: '',
     });
+
+    // Destructuring
     const { fullName, email, password, passwordConfirm } = user;
     const { setAlert } = alertContext;
+    const { register, error, clearErrors } = authContext;
+ 
+    useEffect(() => {
+        if (error) {
+            if (error.id === 'user_exists') {
+                setAlert(error.msg, 'danger');
+                clearErrors();
+            }
+        }
+    }, [error]);
 
     /** Populate user state with the values the user types in */
     const onChange = (e) => setUser({...user, [e.target.name]: e.target.value});
@@ -22,7 +38,7 @@ const Register = () => {
         } else if(password !== passwordConfirm) {
             setAlert('Passwords don\'t match', 'danger');
         } else {
-            console.log('TODO register user');
+            register({ fullName, email, password });
         }
     };
 
