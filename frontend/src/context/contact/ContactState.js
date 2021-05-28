@@ -3,6 +3,7 @@ import axios from 'axios';
 import ContactContext from './contactContext';
 import contactReducer from './contactReducer';
 import {
+    GET_CONTACTS,
     ADD_CONTACT,
     DELETE_CONTACT,
     UPDATE_CONTACT,
@@ -10,12 +11,13 @@ import {
     CLEAR_FILTER,
     SET_CURRENT,
     CLEAR_CURRENT,
+    CLEAR_CONTACT,
     CONTACT_ERROR,
 } from '../types';
 
 const ContactState = (props) => {
     const initialState = {
-        contacts: [],
+        contacts: null,
         current: null,
         filtered: null,
         error: null,
@@ -25,6 +27,16 @@ const ContactState = (props) => {
     /**
      * section to put all Actions
      */
+
+    /** Get Contacts */
+    const getContacts = async () => {
+        try {
+            const res = await axios.get('/api/contacts');
+            dispatch({ type: GET_CONTACTS, payload: res.data });
+        } catch (error) {
+            dispatch({ type: CONTACT_ERROR, payload: error.response.msg });
+        }
+    };
 
     /** Add Contact */
     const addContact = async (contact) => {
@@ -43,23 +55,19 @@ const ContactState = (props) => {
     };
 
     /** Delete Contact */
-    const deleteContact = (id) =>
-        dispatch({ type: DELETE_CONTACT, payload: id });
+    const deleteContact = (id) => dispatch({ type: DELETE_CONTACT, payload: id });
 
     /** Update Contact */
-    const updateContact = (contact) =>
-        dispatch({ type: UPDATE_CONTACT, payload: contact });
+    const updateContact = (contact) => dispatch({ type: UPDATE_CONTACT, payload: contact });
 
     /** Set Current Contact */
-    const setCurrentContact = (contact) =>
-        dispatch({ type: SET_CURRENT, payload: contact });
+    const setCurrentContact = (contact) => dispatch({ type: SET_CURRENT, payload: contact });
 
     /** Clear Current Contact */
     const clearCurrentContact = () => dispatch({ type: CLEAR_CURRENT });
 
     /** Filter Contacts */
-    const filterContacts = (query) =>
-        dispatch({ type: FILTER_CONTACTS, payload: query });
+    const filterContacts = (query) => dispatch({ type: FILTER_CONTACTS, payload: query });
 
     /** ClearFilter */
     const clearFilter = () => dispatch({ type: CLEAR_FILTER });
@@ -71,6 +79,7 @@ const ContactState = (props) => {
                 currentContact: state.current,
                 filteredContacts: state.filtered,
                 error: state.error,
+                getContacts,
                 addContact,
                 deleteContact,
                 updateContact,
