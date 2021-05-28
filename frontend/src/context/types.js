@@ -17,7 +17,7 @@ export const FILTER_CONTACTS = 'FILTER_CONTACTS';
 export const SET_CURRENT = 'SET_CURRENT';
 export const CLEAR_CURRENT = 'CLEAR_CURRENT';
 export const CLEAR_FILTER = 'CLEAR_FILTER';
-export const CLEAR_CONTACT = 'CLEAR_CONTACT';
+export const CLEAR_ALL = 'CLEAR_ALL';
 export const CONTACT_ERROR = 'CONTACT_ERROR';
 
 /** Alert types */
